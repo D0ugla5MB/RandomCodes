@@ -11,93 +11,83 @@ typedef struct Node
     int data;
     struct Node *leftPtr;
     struct Node *rightPtr;
-    int (*rng)(int min, int max);
+    int (*rngPtr)(int min, int max);
 } Node;
 
-Node *makeNode(int min, int max)
+Node makeNode(int min, int max)
 {
-    Node *nodePtr = malloc(sizeof(Node));
-    nodePtr->rng = rng;
-    nodePtr->data = nodePtr->rng(min, max);
-    nodePtr->leftPtr = NULL;
-    nodePtr->rightPtr = NULL;
-    return nodePtr;
+    Node *newNode = malloc(sizeof(Node));
+    newNode->rngPtr = rng;
+    newNode->data = newNode->rngPtr(min, max);
+    newNode->leftPtr = NULL;
+    newNode->rightPtr = NULL;
+    return *newNode;
 }
 
-Node *linkLeft(Node *parent, Node *child)
-{
-    if (!parent)
-    {
-        return NULL;
-    }
-    if (!child)
-    {
-        child = makeNode(-9999, 9999);
-    }
-
-    parent->leftPtr = child;
-    return parent->leftPtr;
-}
-
-Node *linkRight(Node *parent, Node *child)
-{
-    if (!parent)
-    {
-        return NULL;
-    }
-    if (!child)
-    {
-        child = makeNode(-9999, 9999);
-    }
-
-    parent->rightPtr = child;
-    return parent->rightPtr;
-}
-
-Node *goLeft(Node *node)
-{
-    if (!node)
-    {
-        return NULL;
-    }
-    return node->leftPtr;
-}
-
-void showNode(struct Node *auxPtr)
+void showNode(const struct Node *auxPtr) // TO AVOID COPYING THE DATA
 {
     printf("\n");
-    printf("Node number:\t%d\n",auxPtr->data);
-    //printf("Node\n:number: %d\tLeft: %p\tRight: %p\n", auxPtr->data, *auxPtr->leftPtr, *auxPtr->rightPtr);
+    printf("Node: %p\t Data: %d\n",
+           auxPtr, auxPtr->data);
     printf("--------------------------------------\n");
 }
 
-int main() {
-    Node *root = makeNode(-9999, 9999);
-    Node *currentNode = root;
-    int cnt = 5;
-    
-    // Create chain
-    for (int i = 0; i < cnt; i++) {
-        currentNode->leftPtr = makeNode(-9999, 9999);
-        currentNode = currentNode->leftPtr;
+void addNode(Node *baseNode, Node (*nodeFncPtr)(int, int))
+{
+    if (baseNode->rngPtr(0, 1) > 0)
+    {
+        baseNode->leftPtr = malloc(sizeof(Node));
+        *(baseNode->leftPtr) = nodeFncPtr(1, 100);
+        return;
     }
-    
-    // Display chain
-    currentNode = root;
-    while (currentNode != NULL) {
-        showNode(currentNode);
-        currentNode = currentNode->leftPtr;
+    baseNode->rightPtr = malloc(sizeof(Node));
+    *(baseNode->rightPtr) = nodeFncPtr(1, 100);
+    return;
+}
+
+void showNodesList(Node *baseNode)
+{
+    int cnt = 0;
+    Node *auxPtr = baseNode;
+    while (auxPtr || cnt < 2)
+    {
+        Node nodes[2];
+
+        showNode(auxPtr);
+        if (auxPtr->leftPtr)
+        {
+            showNode(auxPtr->leftPtr);
+            nodes[0] = *(auxPtr->leftPtr);
+        }
+        if (auxPtr->rightPtr)
+        {
+            showNode(auxPtr->rightPtr);
+            nodes[1] = *(auxPtr->leftPtr);
+        }
+        if (cnt > 1)
+        {
+            cnt = 0;
+        }
+        auxPtr = &nodes[cnt];
+        cnt++;
+        if (!auxPtr->leftPtr && !auxPtr->rightPtr)
+        {
+            break;
+        }
+        
     }
 
-    // Free chain
-    currentNode = root;
-    Node *next;
-    while (currentNode != NULL) {
-        next = currentNode->leftPtr;
-        free(currentNode);
-        currentNode = next;
-    }
-    free(next);
+    return;
+}
+
+int main()
+{
+    Node root = makeNode(1, 100);
+    addNode(&root, makeNode);
+
+    Node *nodePtr = &root;
+
+    showNodesList(nodePtr);
 
     return 0;
 }
