@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
-void playWithChars(char str[])
+
+void playWithChars(char str[65])
 {
     /*
         ARRAY DECAY: when an arr is passed to a func, it decays into a ptr to its 1st elem
