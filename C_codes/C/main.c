@@ -1,3 +1,4 @@
+#include "head.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -50,7 +51,7 @@ void doFile(char *fn, char *m)
     return;
 }
 
-int main()
+int main_root()
 {
     //    doFile("test.txt", "r");
     const char *source = "This is a string that is exactly sixty-four characters long abcdefghij"; // 64 characters

@@ -8,7 +8,7 @@
     do        \
     () * do()
 
-int main()
+int main_root()
 {
     /* #undef VAL_A
     #define VAL_A 5 // this works though can cause issues

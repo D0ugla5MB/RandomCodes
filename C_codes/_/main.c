@@ -3,7 +3,7 @@
 */
 #include "head.h"
 
-int main(){
+int main_root(){
     char str[] = {'P', 'L', 'A', 'Y', 'I', 'N', 'G', ' ', 'W', 'I', 'T', 'H', ' ', 'A', 'R', 'R', 'A', 'Y', ' ', 'D', 'E', 'C', 'A', 'Y', ' ', 'H', 'E', 'R', 'E', '!', '\0'};
     unsafe_macro_type();
     return 0;

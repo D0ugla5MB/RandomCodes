@@ -31,7 +31,7 @@ bool isPalindrome(int x)
     return true;
 }
 
-int main()
+int main_root()
 {
     int test = 12221;
     if (isPalindrome(test))
